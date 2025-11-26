@@ -40,16 +40,35 @@ def add_tasks(description,tasks):
         "updatedAt":timestamp
     }
     tasks.append(new_task)
+    #when i append a new task it is stored in ram ,i.e the temporary memory not on jason.
     save_tasks(tasks)
     #first thing i need to check is if that task is present in my jason or not 
     # if it is present , then I'll return some thing , else i'll add
 def save_tasks(tasks):
     with open(TASK_FILE,"w") as file:
         json.dump(tasks,file,indent=4)
-     
+def search_task(id,tasks):
+    for task in tasks:
+        if task["id"]==id:
+            return task
+    return None
+
+def update_task(id,tasks,status):
+    result=search_task(id,tasks)
+    if result ==None:
+        return None
+    else:
+        result["status"]=status
+        result["updatedAt"]=datetime.now().strftime("%y/%m/%d %I:%M %p")
+
+    save_tasks(tasks)
+    
+
+
 tasks=load_task()
 
 add_tasks("outing",tasks)
+update_task(1,tasks,status="done")
 tasks=load_task()
 print(tasks)
 #print("script startedT")
