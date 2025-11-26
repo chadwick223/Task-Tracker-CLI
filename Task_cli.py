@@ -62,13 +62,20 @@ def update_task(id,tasks,status):
         result["updatedAt"]=datetime.now().strftime("%y/%m/%d %I:%M %p")
 
     save_tasks(tasks)
-    
+def delete_tasks(id,tasks):
+    result=search_task(id,tasks)
+    if result == None:
+        return "Task not found"
+    else:
+        tasks.remove(result)
+    save_tasks(tasks)
 
 
 tasks=load_task()
 
 add_tasks("outing",tasks)
 update_task(1,tasks,status="done")
+delete_tasks(1,tasks)
 tasks=load_task()
 print(tasks)
 #print("script startedT")
