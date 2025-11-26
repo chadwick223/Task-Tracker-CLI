@@ -89,7 +89,7 @@ def list_tasks(tasks,status_filter=None):
     filtered=[]
     if status_filter:
         for task in tasks:
-            if task["staus"]==status_filter:
+            if task["status"]==status_filter:
 
                 filtered.append(task)
     else:
@@ -98,7 +98,7 @@ def list_tasks(tasks,status_filter=None):
         print("No tasks found.")
         return
 
-    for task in tasks:
+    for task in filtered:
         print(f"ID         : {task['id']}")
         print(f"Description: {task['description']}")
         print(f"Status     : {task['status']}")
@@ -116,8 +116,8 @@ if args.command=="add":
 elif args.command=="list":
     if args.value:
         list_tasks(tasks,args.value)
-
-    print(list_tasks(tasks))
+    else:
+        list_tasks(tasks)
 elif args.command=="delete":
     task_id=int(args.value)
     print(delete_tasks(task_id,tasks))
