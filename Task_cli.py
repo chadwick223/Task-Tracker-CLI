@@ -74,6 +74,7 @@ def update_task(id,tasks,status):
         result["updatedAt"]=datetime.now().strftime("%y/%m/%d %I:%M %p")
 
     save_tasks(tasks)
+    return f"Task {id} updated successfully"
 def delete_tasks(id,tasks):
     result=search_task(id,tasks)
     if result == None:
