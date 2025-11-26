@@ -84,8 +84,16 @@ def delete_tasks(id,tasks):
     return f"Task {id} deleted successfully"
 
 
-def list_tasks(tasks):
-    if not tasks:
+def list_tasks(tasks,status_filter=None):
+    filtered=[]
+    if status_filter:
+        for task in tasks:
+            if task["staus"]==status_filter:
+
+                filtered.append(task)
+    else:
+        filtered=tasks
+    if not filtered:
         print("No tasks found.")
         return
 
@@ -105,6 +113,9 @@ if args.command=="add":
     add_tasks(description,tasks)
     print("Task added successfully")
 elif args.command=="list":
+    if args.value:
+        list_tasks(tasks,args.value)
+
     print(list_tasks(tasks))
 elif args.command=="delete":
     task_id=int(args.value)
