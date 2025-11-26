@@ -1,6 +1,18 @@
 import json
 import os
 from datetime import datetime
+import argparse
+parser=argparse.ArgumentParser(description="Task manager cli")
+
+parser.add_argument("command", help="Command to run")
+
+parser.add_argument("value",nargs="?", help="value for Command")
+
+parser.add_argument("extra",nargs="?", help="Extra argument")
+
+
+args = parser.parse_args()
+
 TASK_FILE="task.json"
 
 
@@ -69,13 +81,37 @@ def delete_tasks(id,tasks):
     else:
         tasks.remove(result)
     save_tasks(tasks)
+    return f"Task {id} deleted successfully"
+
+
+def list_tasks(tasks):
+    if not tasks:
+        print("No tasks found.")
+        return
+
+    for task in tasks:
+        print(f"ID         : {task['id']}")
+        print(f"Description: {task['description']}")
+        print(f"Status     : {task['status']}")
+        print(f"Created At : {task['createdAt']}")
+        print(f"Updated At : {task['updatedAt']}")
+        print("-" * 40)
 
 
 tasks=load_task()
 
-add_tasks("outing",tasks)
-update_task(1,tasks,status="done")
-delete_tasks(1,tasks)
-tasks=load_task()
-print(tasks)
-#print("script startedT")
+if args.command=="add":
+    description=args.value
+    add_tasks(description,tasks)
+    print("Task added successfully")
+elif args.command=="list":
+    print(list_tasks(tasks))
+elif args.command=="delete":
+    task_id=int(args.value)
+    print(delete_tasks(task_id,tasks))
+elif args.command == "update":
+    task_id=int(args.value)
+    status=args.extra
+    print(update_task(task_id,tasks,status))
+else:
+    print("unknown command")
